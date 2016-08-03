@@ -180,7 +180,7 @@ RTC::ReturnCode_t G_ROBOT::onExecute(RTC::UniqueId ec_id)
 
 				G_ROBO->setJoint(i + 1, angle * 10);
 
-				std::cout << i << "\t" << angle * 10 << std::endl;
+				//std::cout << i << "\t" << angle * 10 << std::endl;
 			}
 			
 
