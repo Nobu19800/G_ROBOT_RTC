@@ -274,7 +274,7 @@ class G_ROBOT
   /*!
   * モーションの速度
   * - Type: RTC::TimedDouble
-  * - Unit: ms
+  * - Unit: s
   */
   InPort<RTC::TimedDouble> m_motion_timeIn;
 

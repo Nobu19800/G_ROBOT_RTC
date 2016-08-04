@@ -180,7 +180,7 @@ RTC::ReturnCode_t G_ROBOT::onExecute(RTC::UniqueId ec_id)
 	if (m_motion_timeIn.isNew())
 	{
 		m_motion_timeIn.read();
-		G_ROBO->setMotionTime(m_motion_time.data);
+		G_ROBO->setMotionTime(m_motion_time.data*1000.0);
 	}
 	if (m_target_angleIn.isNew())
 	{
