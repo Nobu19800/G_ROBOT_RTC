@@ -250,32 +250,50 @@ class G_ROBOT
    * - DefaultValue: COM3
    */
   std::string m_port;
+  /*!
+  * デフォルトのモーションの時間
+  * - Name: default_motion_time default_motion_time
+  * - DefaultValue: 300
+  * - Unit: ms
+  */
+  int m_default_motion_time;
 
   // </rtc-template>
 
   // DataInPort declaration
   // <rtc-template block="inport_declare">
-  RTC::TimedDoubleSeq m_in;
+  RTC::TimedDoubleSeq m_target_angle;
   /*!
-   * サーボの目標角度
-   * - Type: RTC::TimedDoubleSeq
-   * - Number: 20
-   * - Unit: rad
-   */
-  InPort<RTC::TimedDoubleSeq> m_inIn;
-  
+  * サーボの目標角度
+  * - Type: RTC::TimedDoubleSeq
+  * - Number: 20
+  * - Unit: rad
+  */
+  InPort<RTC::TimedDoubleSeq> m_target_angleIn;
+  RTC::TimedDouble m_motion_time;
+  /*!
+  * モーションの速度
+  * - Type: RTC::TimedDouble
+  * - Unit: ms
+  */
+  InPort<RTC::TimedDouble> m_motion_timeIn;
+
   // </rtc-template>
 
 
   // DataOutPort declaration
   // <rtc-template block="outport_declare">
-  RTC::TimedDoubleSeq m_out;
+  RTC::TimedDoubleSeq m_current_angle;
   /*!
-   * サーボの現在の角度
-   * - Type: RTC::TimedDoubleSeq
-   * - Unit: rad
-   */
-  OutPort<RTC::TimedDoubleSeq> m_outOut;
+  * サーボの現在の角度
+  * - Type: RTC::TimedDoubleSeq
+  * - Unit: rad
+  */
+  OutPort<RTC::TimedDoubleSeq> m_current_angleOut;
+
+  // </rtc-template>
+
+
   
   // </rtc-template>
 

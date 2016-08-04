@@ -35,17 +35,21 @@ static const char* g_robot_spec[] =
     "max_instance",      "1",
     "language",          "C++",
     "lang_type",         "compile",
-    // Configuration variables
-    "conf.default.servo_num", "20",
-    "conf.default.port", "COM3",
+	// Configuration variables
+	"conf.default.servo_num", "20",
+	"conf.default.port", "COM3",
+	"conf.default.default_motion_time", "300",
 
-    // Widget
-    "conf.__widget__.servo_num", "text",
-    "conf.__widget__.port", "text",
-    // Constraints
+	// Widget
+	"conf.__widget__.servo_num", "text",
+	"conf.__widget__.port", "text",
+	"conf.__widget__.default_motion_time", "text",
+	// Constraints
+	"conf.__constraints__.default_motion_time", "0<x<10000",
 
-    "conf.__type__.servo_num", "int",
-    "conf.__type__.port", "string",
+	"conf.__type__.servo_num", "int",
+	"conf.__type__.port", "string",
+	"conf.__type__.default_motion_time", "int",
 
     ""
   };
@@ -57,9 +61,10 @@ static const char* g_robot_spec[] =
  */
 G_ROBOT::G_ROBOT(RTC::Manager* manager)
     // <rtc-template block="initializer">
-  : RTC::DataFlowComponentBase(manager),
-    m_inIn("in", m_in),
-    m_outOut("out", m_out)
+	: RTC::DataFlowComponentBase(manager),
+	m_target_angleIn("target_angle", m_target_angle),
+	m_motion_timeIn("motion_time", m_motion_time),
+	m_current_angleOut("current_angle", m_current_angle)
 
     // </rtc-template>
 {
@@ -80,10 +85,11 @@ RTC::ReturnCode_t G_ROBOT::onInitialize()
   // Registration: InPort/OutPort/Service
   // <rtc-template block="registration">
   // Set InPort buffers
-  addInPort("in", m_inIn);
-  
-  // Set OutPort buffer
-  addOutPort("out", m_outOut);
+	addInPort("target_angle", m_target_angleIn);
+	addInPort("motion_time", m_motion_timeIn);
+
+	// Set OutPort buffer
+	addOutPort("current_angle", m_current_angleOut);
   
   // Set service provider to Ports
   
@@ -97,6 +103,7 @@ RTC::ReturnCode_t G_ROBOT::onInitialize()
   // Bind variables and configuration variable
   bindParameter("servo_num", m_servo_num, "20");
   bindParameter("port", m_port, "COM3");
+  bindParameter("default_motion_time", m_default_motion_time, "300");
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -150,9 +157,10 @@ RTC::ReturnCode_t G_ROBOT::onActivated(RTC::UniqueId ec_id)
 	}
 
 	G_ROBO->setServo(1, 0);
+	G_ROBO->setDefaultMotionTime(m_default_motion_time);
 	G_ROBO->initPosition();
 
-	m_out.data.length(m_servo_num);
+	m_target_angle.data.length(m_servo_num);
 
   return RTC::RTC_OK;
 }
@@ -169,14 +177,19 @@ RTC::ReturnCode_t G_ROBOT::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t G_ROBOT::onExecute(RTC::UniqueId ec_id)
 {
-	if (m_inIn.isNew())
+	if (m_motion_timeIn.isNew())
 	{
-		m_inIn.read();
-		for (int i = 0; i < m_in.data.length(); i++)
+		m_motion_timeIn.read();
+		G_ROBO->setMotionTime(m_motion_time.data);
+	}
+	if (m_target_angleIn.isNew())
+	{
+		m_target_angleIn.read();
+		for (int i = 0; i < m_target_angle.data.length(); i++)
 		{
 			if (i < m_servo_num)
 			{
-				double angle = m_in.data[i] * 180.0 / M_PI;
+				double angle = m_target_angle.data[i] * 180.0 / M_PI;
 
 				G_ROBO->setJoint(i + 1, angle * 10);
 
