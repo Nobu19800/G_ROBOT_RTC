@@ -76,7 +76,7 @@ LibreOffice Calcの`RTC起動`ボタンを押してください。
 RTSystemEditorから通信するG-ROBOTSに合わせてCOMポートを設定します。
 G-ROBOTコンポーネントの`port`というコンフィギュレーションパラメータを変更して適用ボタンを押してください。
 
-![grobot8](https://user-images.githubusercontent.com/6216077/90381823-e2afd580-e0b8-11ea-908e-709c622d3580.png)
+![grobot16](https://user-images.githubusercontent.com/6216077/90459695-0288dd00-e13d-11ea-9bc3-76e0ea6dc2ba.jpg)
 
 RTCをアクティブ化してください。
 
