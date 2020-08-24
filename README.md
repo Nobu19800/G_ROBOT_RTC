@@ -34,7 +34,7 @@ RTSystemEditor、ネームサーバーは予め起動しておく。
 
 以下のzipファイルを展開して`EXE/G_ROBOTComp.exe`を起動する。
 
-- https://github.com/Nobu19800/G_ROBOT_RTC/archive/master.zip`LibreOffice-portable.zip`
+- https://github.com/Nobu19800/G_ROBOT_RTC/archive/master.zip
 
 ### 動作確認用RTCの起動
 
